@@ -18,10 +18,15 @@ export default function Login() {
         if (!email || !password) {
             return;
         }
-        // const response = await usersAPI.login(email, password);
-        // TODO
-        setUserEmail(email);
-        navigate("/home");
+        const response = await usersAPI.login(email, password);
+        if (response.code === 200) {
+            console.log(response);
+            // TODO: jwt token
+            setUserEmail(email);
+            navigate("/home");
+        } else {
+            alert(response.message);
+        }
     };
 
     return (
@@ -88,6 +93,7 @@ export default function Login() {
                     </div>
                 </div>
             </div>
+            <div className="pt-5 pb-5"></div>
             <PositionBar position={"bottom"} />
         </div>
     );
