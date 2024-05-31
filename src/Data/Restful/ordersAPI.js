@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import utility from "../../Util/utility";
 
-const BASE_URL = `${import.meta.env.BASE_URL}/api`;
+const BASE_URL = `${import.meta.env.VITE_URL}/api`;
 const myFetch = utility.myFetch;
 
 // 5 APIs

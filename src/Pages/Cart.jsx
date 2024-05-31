@@ -84,6 +84,7 @@ export default function Cart() {
                                 label={"姓名"}
                                 type={"text"}
                                 placeholder={"訂購人姓名"}
+                                readOnly={true}
                             />
                         </div>
                         <div className="col-6">
@@ -91,6 +92,7 @@ export default function Cart() {
                                 label={"電話"}
                                 type={"tel"}
                                 placeholder={"訂購人電話"}
+                                readOnly={true}
                             />
                         </div>
                     </div>
