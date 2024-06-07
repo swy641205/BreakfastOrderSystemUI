@@ -27,9 +27,8 @@ const usersAPI = {
         return result;
     },
     // 註冊
-    register: async (email, password) => {
+    register: async (body) => {
         const url = `${BASE_URL}/users/register`;
-        const body = { email, password };
         const result = await myFetch("POST", url, body);
         return result;
     },

@@ -4,6 +4,7 @@ import PositionBar from "../Components/PositionBar";
 import InputPattern from "../Components/InputPattern";
 import CustomButton from "../Components/CustomButton";
 import usersAPI from "../Data/Restful/usersAPI";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
     const [email, setEmail] = useState("");
@@ -12,6 +13,7 @@ export default function Register() {
     const [userName, setUserName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [verificationCode, setVerificationCode] = useState("");
+    const navigate = useNavigate();
 
     const sendVerificationCode = async () => {
         if (!verificationCode) {
@@ -19,6 +21,35 @@ export default function Register() {
         }
         const response = await usersAPI.sendVerificationEmail(email);
         // TODO
+    };
+    const register = async () => {
+        if (
+            !email ||
+            !password ||
+            !userName ||
+            !phoneNumber ||
+            !verificationCode
+        ) {
+            return;
+        }
+        if (password !== confirmPassword) {
+            return;
+        }
+        const body = {
+            email: email,
+            password: password,
+            userName: userName,
+            phoneNumber: phoneNumber,
+            verificationCode: verificationCode,
+        };
+        const response = await usersAPI.register(body);
+        // console.log(response);
+        if (response) {
+            alert("註冊成功");
+            navigate("/");
+        } else {
+            alert("註冊失敗");
+        }
     };
 
     return (
@@ -97,6 +128,7 @@ export default function Register() {
                                             <CustomButton
                                                 type={"button"}
                                                 label={"註冊"}
+                                                onClick={register}
                                             />
                                         </div>
                                     </div>
