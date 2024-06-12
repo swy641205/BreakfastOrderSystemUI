@@ -12,6 +12,7 @@ import AdminLogin from "./Pages/AdminLogin";
 import ShopLogin from "./Pages/ShopLogin";
 import OrderConfirm from "./Pages/OrderConfirm";
 import AdminBackstage from "./Pages/AdminBackstage";
+import ShopRegister from "./Pages/ShopRegister";
 
 function App() {
     return (
@@ -34,6 +35,7 @@ function App() {
                     />
                     <Route path="/auth/shop" element={<ShopLogin />} />
                     <Route path="/auth/shop/order" element={<OrderConfirm />} />
+                    <Route path="/shop/register" element={<ShopRegister />} />
                     <Route path="*" element={<Login />} />
                 </Routes>
             </Router>

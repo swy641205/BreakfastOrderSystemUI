@@ -56,12 +56,26 @@ export default function ShopLogin() {
                             }}
                         />
                         <div className="container pt-1">
-                            <CustomButton
-                                type={"button"}
-                                label={"登入"}
-                                color={"danger"}
-                                onClick={login}
-                            />
+                            <div className="row">
+                                <div className="col-6">
+                                    <CustomButton
+                                        type={"button"}
+                                        label={"登入"}
+                                        color={"danger"}
+                                        onClick={login}
+                                    />
+                                </div>
+                                <div className="col-6">
+                                    <CustomButton
+                                        type={"button"}
+                                        label={"註冊"}
+                                        color={"danger"}
+                                        onClick={() =>
+                                            navigate("/shop/register")
+                                        }
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

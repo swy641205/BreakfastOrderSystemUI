@@ -6,7 +6,7 @@ import CustomButton from "../Components/CustomButton";
 import usersAPI from "../Data/Restful/usersAPI";
 import { useNavigate } from "react-router-dom";
 
-export default function Register() {
+export default function ShopRegister() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -58,7 +58,7 @@ export default function Register() {
         <div>
             <PositionBar position={"top"} />
             <div className="conatiner pt-5">
-                <h1 className="text-center pt-5">使用者註冊</h1>
+                <h1 className="text-center pt-5">店家註冊</h1>
                 <div className="container pt-5">
                     <div className="container">
                         <div className="container">
@@ -115,7 +115,7 @@ export default function Register() {
                                             minLength={8}
                                         />
                                         <InputPattern
-                                            label={"使用者名稱"}
+                                            label={"店家名稱"}
                                             type={"text"}
                                             value={userName}
                                             onChange={(event) => {
@@ -123,7 +123,7 @@ export default function Register() {
                                             }}
                                         />
                                         <InputPattern
-                                            label={"手機號碼"}
+                                            label={"店家電話"}
                                             type={"tel"}
                                             value={phoneNumber}
                                             onChange={(event) => {
