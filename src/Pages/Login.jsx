@@ -29,7 +29,7 @@ export default function Login() {
             setUserEmail(email);
             navigate("/home");
         } else {
-            alert(response.message);
+            alert(response.message || "發生錯誤");
         }
     };
 
