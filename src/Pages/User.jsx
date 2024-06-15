@@ -42,13 +42,27 @@ export default function User() {
 
 
     const saveModifyData = async () => {
-        // TODO
+        const body = {
+            email: userEmail,
+            password: password,
+            username: userName,
+            phone: phoneNumber,
+        };
+
+        const token = localStorage.getItem("jwtToken");
+        const response = await usersAPI.updateUser(token, body);
+        if (response.code === 200) {
+            console.log(response);
+        } else {
+            alert(response.message);
+        }
         setIsModifyData(false);
     };
+
     const logout = async () => {
         if (userEmail) {
             setUserEmail("");
-            localStorage.removeItem("userEmail");
+            localStorage.removeItem("jwtToken");
             navigate("/");
         }
     };
