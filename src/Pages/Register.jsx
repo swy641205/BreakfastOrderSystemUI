@@ -17,12 +17,17 @@ export default function Register() {
     const navigate = useNavigate();
 
     const sendVerificationCode = async () => {
-        if (!verificationCode) {
+        if (!email) {
+            alert('Please enter your email');
             return;
         }
+
         const response = await usersAPI.sendVerificationEmail(email);
-        // TODO
-        setIsSendEmail(true);
+        if (response) {
+            setIsSendEmail(true);
+            alert("驗證碼已寄出");
+        }
+            
     };
     const register = async () => {
         if (
@@ -32,23 +37,32 @@ export default function Register() {
             !phoneNumber ||
             !verificationCode
         ) {
+            alert("請輸入完整資料");
             return;
         }
         if (password !== confirmPassword) {
+            alert("密碼不一致");
             return;
         }
         const body = {
             email: email,
             password: password,
-            userName: userName,
-            phoneNumber: phoneNumber,
-            verificationCode: verificationCode,
+            confirm_password: confirmPassword,
+            username: userName,
+            phone: phoneNumber,
+            activation_secret: verificationCode,
         };
         const response = await usersAPI.register(body);
-        // console.log(response);
+        console.log(response);
+  
         if (response) {
+            if (response.secret_incorrect) {
+                alert("驗證碼錯誤");
+                return;
+            }
             alert("註冊成功");
             navigate("/");
+
         } else {
             alert("註冊失敗");
         }
