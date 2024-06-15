@@ -20,15 +20,27 @@ export default function AdminLogin() {
         }
     }, []);
 
-    const login = async () => {
-        if (!email || !password) {
-            return;
+	const login = async () => {
+		if (!email || !password) {
+			return;
+		}
+		const r = await usersAPI.login(email, password);
+
+		if (r.code === 200) {
+			console.log(r);
+			const token = r.token;
+			localStorage.setItem("jwtToken", token);
+		} else {
+			alert(r.message || "發生錯誤");
+		}
+        console.log(r.roles);
+        if (r.roles?.includes('admin')) {
+            setUserEmail(email);
+            navigate("/auth/admin/backstage");
+        } else {
+            alert("You are not an shope admin.");
         }
-        // const response = await usersAPI.login(email, password);
-        // TODO
-        setUserEmail(email);
-        navigate("/auth/admin/backstage");
-    };
+	};
 
     return (
         <div>
