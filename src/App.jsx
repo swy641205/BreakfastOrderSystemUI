@@ -13,6 +13,9 @@ import ShopLogin from "./Pages/ShopLogin";
 import OrderConfirm from "./Pages/OrderConfirm";
 import AdminBackstage from "./Pages/AdminBackstage";
 import ShopRegister from "./Pages/ShopRegister";
+import ProtectedRoute from './Components/ProtectedRoute';
+
+
 
 function App() {
     return (
@@ -21,11 +24,12 @@ function App() {
                 <Routes>
                     <Route index path="/" element={<Login />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/home" element={<Home />} />
+                    <Route path="/home" element={<ProtectedRoute component={Home} />} />
+                    {/* TODO add protectedroute to all page */}
                     <Route path="/menu" element={<Menu />} />
                     <Route path="/cart" element={<Cart />} />
                     <Route path="/history" element={<OrderHistory />} />
-                    <Route path="/user" element={<User />} />
+                    <Route path="/user" element={<ProtectedRoute component={User} />} />
                     <Route path="/order/detail" element={<BreakfastDetail />} />
                     <Route path="/checkout" element={<Checkout />} />
                     <Route path="/auth/admin" element={<AdminLogin />} />

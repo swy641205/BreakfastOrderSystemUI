@@ -19,9 +19,13 @@ export default function Login() {
             return;
         }
         const response = await usersAPI.login(email, password);
+
+    
         if (response.code === 200) {
             console.log(response);
-            // TODO: jwt token
+            const token = response.token;
+            localStorage.setItem('jwtToken', token);
+
             setUserEmail(email);
             navigate("/home");
         } else {
