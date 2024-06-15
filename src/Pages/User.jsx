@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../Components/Navbar";
 import PositionBar from "../Components/PositionBar";
 import personIcon from "../Images/person-circle.svg";
@@ -8,6 +8,7 @@ import { useRecoilState } from "recoil";
 import userEmailRecoilAtom from "./../Data/Recoil/userEmailRecoilAtom";
 import CustomButton from "../Components/CustomButton";
 import { useNavigate } from "react-router-dom";
+import usersAPI from "../Data/Restful/usersAPI";
 
 export default function User() {
     const [userEmail, setUserEmail] = useRecoilState(userEmailRecoilAtom);
@@ -16,6 +17,29 @@ export default function User() {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [isModifyData, setIsModifyData] = useState(false);
     const navigate = useNavigate();
+
+    // 在组件加载时从 API 获取用户数据
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const token = localStorage.getItem("jwtToken");
+            if (token) {
+                const response = await usersAPI.getUserByEmail(token);
+                console.log(response);
+                if (response.code === 200) {
+                    const { email, username, phone } = response.data;
+                    setUserEmail(email);
+                    setUserName(username);
+                    setPhoneNumber(phone);
+                } else {
+                    alert(response.message || "Failed to fetch user data");
+                }
+            } else {
+                navigate("/login");
+            }
+        };
+        fetchUserData();
+    }, [setUserEmail, setUserName, setPhoneNumber, navigate]);
+
 
     const saveModifyData = async () => {
         // TODO

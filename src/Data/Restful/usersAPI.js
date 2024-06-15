@@ -7,8 +7,8 @@ const myFetch = utility.myFetch;
 // 5 APIs
 const usersAPI = {
     // 透過 Email 取得使用者資料
-    getUserByEmail: async (jwtToken, email) => {
-        const url = `${BASE_URL}/users/profile?email=${email}`;
+    getUserByEmail: async (jwtToken) => {
+        const url = `${BASE_URL}/users/profile`;
         const result = await myFetch("GET", url, {}, jwtToken);
         return result;
     },
