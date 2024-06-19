@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "./../Components/Navbar";
 import PositionBar from "../Components/PositionBar";
 import {
@@ -13,8 +13,47 @@ import {
     Row,
 } from "react-bootstrap";
 import images from "../Images/images.jpg";
+import { useNavigate } from "react-router-dom";
+import menuAPI from "../Data/Restful/menuAPI";
+
+const BASE_URL = `${import.meta.env.VITE_URL}/images`;
 
 export default function Home() {
+    const [menuData, setMenuData] = useState([]);
+    const navigate = useNavigate();
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const token = localStorage.getItem("jwtToken");
+            if (token) {
+                try {
+                    const response = await menuAPI.getAllMenu(token);
+                    console.log(response);
+                    if (/^2\d{2}$/.test(response.code)) {
+                        const result = response.data;
+                        // console.log("Fetched data:", result);
+                        setMenuData(result);
+                    } else {
+                        alert(response.message);
+                    }
+                } catch (error) {
+                    console.error("Error fetching menu data:", error);
+                    alert("Failed to fetch menu data.");
+                }
+            } else {
+                navigate("/login");
+            }
+        };
+        fetchUserData();
+    }, [navigate]);
+
+    const getRandomMenuItems = (menuData, count) => {
+        const shuffled = [...menuData].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, count);
+    };
+
+    const randomMenuItems = getRandomMenuItems(menuData, 3);
+
+
     return (
         <div>
             <Navbar />
@@ -29,38 +68,22 @@ export default function Home() {
                     <section className="mt-5 mb-4">
                         <h2>今日推薦</h2>
                         <Row className="justify-content-center mt-3 mb-4 ps-5 pe-5">
-                            <Col md={6} lg={4} className="pb-3">
-                                <Card>
-                                    <CardImg
-                                        variant="top"
-                                        src={images}
-                                        alt="推薦餐點"
-                                    />
-                                    <CardBody>
-                                        <CardTitle>美味三明治</CardTitle>
-                                        <CardText>
-                                            我們的特製三明治，配上新鮮的蔬菜和美味的醬料，讓你一整天活力滿滿。
-                                        </CardText>
-                                        <CardText>價格：$50</CardText>
-                                    </CardBody>
-                                </Card>
-                            </Col>
-                            <Col md={6} lg={4}>
-                                <Card>
-                                    <CardImg
-                                        variant="top"
-                                        src={images}
-                                        alt="推薦餐點"
-                                    />
-                                    <CardBody>
-                                        <CardTitle>美味三明治</CardTitle>
-                                        <CardText>
-                                            我們的特製三明治，配上新鮮的蔬菜和美味的醬料，讓你一整天活力滿滿。
-                                        </CardText>
-                                        <CardText>價格：$50</CardText>
-                                    </CardBody>
-                                </Card>
-                            </Col>
+                            {randomMenuItems.map((item) => (
+                                <Col key={item.id} md={6} lg={4} className="pb-3">
+                                    <Card>
+                                        <CardImg
+                                            variant="top"
+                                            src={`${BASE_URL}/${item.name}.png`}
+                                            alt={item.name}
+                                        />
+                                        <CardBody>
+                                            <CardTitle>{item.name}</CardTitle>
+                                            <CardText>{item.description}</CardText>
+                                            <CardText>價格：${item.price}</CardText>
+                                        </CardBody>
+                                    </Card>
+                                </Col>
+                            ))}
                         </Row>
                     </section>
                 </Container>
