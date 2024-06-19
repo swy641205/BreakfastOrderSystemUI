@@ -30,7 +30,7 @@ function App() {
                     <Route path="/cart" element={<Cart />} />
                     <Route path="/history" element={<OrderHistory />} />
                     <Route path="/user" element={<ProtectedRoute component={User} />} />
-                    <Route path="/order/detail" element={<BreakfastDetail />} />
+                    <Route path="/order/detail/:id" element={<BreakfastDetail />} />
                     <Route path="/checkout" element={<Checkout />} />
                     <Route path="/auth/admin" element={<AdminLogin />} />
                     <Route

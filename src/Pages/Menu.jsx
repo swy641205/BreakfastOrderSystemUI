@@ -50,14 +50,14 @@ export default function Menu() {
         fetchMenuData();
     }, [navigate]);
 
-    const toDetail = () => {
-        navigate("/order/detail");
+    const toDetail = (id) => {
+        navigate(`/order/detail/${id}`);
     };
 
     const renderMenuItems = (tag) => {
         const items = menuData.filter(item => item.tag === tag);
         return items.map(item => (
-            <ListGroupItem className="mb-3" onClick={toDetail} key={item.id}>
+            <ListGroupItem className="mb-3" onClick={() => toDetail(item.id)} key={item.id}>
                 <div className="row">
                     <div className="col-2">
                     <CardImg variant="top" src={`${BASE_URL}/${item.name}.png`} />

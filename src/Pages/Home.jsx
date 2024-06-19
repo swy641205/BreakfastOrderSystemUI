@@ -13,7 +13,7 @@ import {
     Row,
 } from "react-bootstrap";
 import images from "../Images/images.jpg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import menuAPI from "../Data/Restful/menuAPI";
 
 const BASE_URL = `${import.meta.env.VITE_URL}/images`;
@@ -45,13 +45,17 @@ export default function Home() {
         };
         fetchUserData();
     }, [navigate]);
-
+    
     const getRandomMenuItems = (menuData, count) => {
         const shuffled = [...menuData].sort(() => 0.5 - Math.random());
         return shuffled.slice(0, count);
     };
-
+    
     const randomMenuItems = getRandomMenuItems(menuData, 3);
+    
+    const toDetail = (id) => {
+        navigate(`/order/detail/${id}`);
+    };
 
 
     return (
@@ -70,18 +74,20 @@ export default function Home() {
                         <Row className="justify-content-center mt-3 mb-4 ps-5 pe-5">
                             {randomMenuItems.map((item) => (
                                 <Col key={item.id} md={6} lg={4} className="pb-3">
-                                    <Card>
-                                        <CardImg
-                                            variant="top"
-                                            src={`${BASE_URL}/${item.name}.png`}
-                                            alt={item.name}
-                                        />
-                                        <CardBody>
-                                            <CardTitle>{item.name}</CardTitle>
-                                            <CardText>{item.description}</CardText>
-                                            <CardText>價格：${item.price}</CardText>
-                                        </CardBody>
-                                    </Card>
+                                    <Link to={`/order/detail/${item.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                        <Card>
+                                            <CardImg
+                                                variant="top"
+                                                src={`${BASE_URL}/${item.name}.png`}
+                                                alt={item.name}
+                                            />
+                                            <CardBody>
+                                                <CardTitle>{item.name}</CardTitle>
+                                                <CardText>{item.description}</CardText>
+                                                <CardText>價格：${item.price}</CardText>
+                                            </CardBody>
+                                        </Card>
+                                    </Link>
                                 </Col>
                             ))}
                         </Row>

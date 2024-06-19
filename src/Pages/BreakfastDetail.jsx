@@ -1,30 +1,54 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PositionBar from "./../Components/PositionBar";
 import Navbar from "./../Components/Navbar";
 import { Button, ButtonGroup, FormControl, Image } from "react-bootstrap";
-import images from "./../Images/images.jpg";
+import { useParams, useNavigate } from "react-router-dom";
+import menuAPI from "../Data/Restful/menuAPI";
 import TitleBar from "../Components/TitleBar";
 import "../Css/index.css";
-import { useNavigate } from "react-router-dom";
+
+const BASE_URL = `${import.meta.env.VITE_URL}/images`;
 
 export default function BreakfastDetail() {
+    const { id } = useParams();
+    const [menuItem, setMenuItem] = useState({
+        name: "加載中...",
+        description: "加載中...",
+        image: "default",
+    });
     const [count, setCount] = useState(1);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const fetchMenuItem = async () => {
+            const token = localStorage.getItem("jwtToken");
+            if (token) {
+                try {
+                    const response = await menuAPI.getMenuById(token, id);
+                    if (/^2\d{2}$/.test(response.code)) {
+                        setMenuItem(response.data);
+                    } else {
+                        alert(response.message);
+                    }
+                } catch (error) {
+                    console.error("Error fetching menu item:", error);
+                    alert("Failed to fetch menu item.");
+                }
+            } else {
+                alert("Please log in to view details.");
+                navigate("/login");
+            }
+        };
+        fetchMenuItem();
+    }, [id, navigate]);
+
     const addCount = () => {
-        if (count >= 1) {
-            setCount(count + 1);
-        } else {
-            setCount(1);
-        }
+        setCount(prevCount => Math.max(prevCount + 1, 1));
     };
+
     const minusCount = () => {
-        if (count > 1) {
-            setCount(count - 1);
-        } else {
-            setCount(1);
-        }
+        setCount(prevCount => Math.max(prevCount - 1, 1));
     };
 
     return (
@@ -35,11 +59,12 @@ export default function BreakfastDetail() {
                 <img
                     style={{ width: "100%", height: "300px" }}
                     className="pt-3"
-                    src={images}
+                    src={`${BASE_URL}/${menuItem.name}.png`}
+                    alt={menuItem.name}
                 />
                 <div className="container">
-                    <h1 className="fw-bold mt-3">起司蛋餅</h1>
-                    <span className="text-muted">注意事項</span>
+                    <h1 className="fw-bold mt-3">{menuItem.name}</h1>
+                    <span className="text-muted">{menuItem.description}</span>
                 </div>
                 <TitleBar title={"餐點備註"} />
                 <div className="container pb-5">
@@ -48,7 +73,7 @@ export default function BreakfastDetail() {
                         placeholder="請輸入備註"
                         style={{ height: "100px" }}
                         className="mt-3"
-                    ></FormControl>
+                    />
                     <div className="w-100 mt-4 text-center mx-auto">
                         <h5 className="text-start">購買數量</h5>
                         <ButtonGroup className="mt-3">
