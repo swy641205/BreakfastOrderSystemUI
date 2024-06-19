@@ -162,7 +162,7 @@ export default function ShopRegister() {
                         </div>
                     </div>
                 </div>
-                <div className="pt-5 pb-5"></div>
+                <div className="pt-5 pb-5" />
             </div>
             <PositionBar position={"bottom"} />
         </div>
