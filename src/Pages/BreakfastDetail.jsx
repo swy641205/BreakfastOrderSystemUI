@@ -51,6 +51,20 @@ export default function BreakfastDetail() {
         setCount(prevCount => Math.max(prevCount - 1, 1));
     };
 
+    const addToCart = (name) => {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const existingItem = cart.find(item => item.id === id);
+    
+        if (existingItem) {
+            existingItem.count += count;
+        } else {
+            cart.push({ id, count, name: name });
+        }
+    
+        localStorage.setItem("cart", JSON.stringify(cart));
+        navigate("/menu");
+    };
+
     return (
         <div>
             <Navbar />
@@ -78,6 +92,7 @@ export default function BreakfastDetail() {
                         <h5 className="text-start">購買數量</h5>
                         <ButtonGroup className="mt-3">
                             <button
+                                type="button" // Add the type prop with the value "button"
                                 className="btn btn-main-color border-0 fs-2 text-dark"
                                 style={{ width: "100px" }}
                                 onClick={minusCount}
@@ -85,6 +100,7 @@ export default function BreakfastDetail() {
                                 -
                             </button>
                             <button
+                                type="button"
                                 className="btn btn-light"
                                 style={{ width: "100px" }}
                                 disabled
@@ -92,6 +108,7 @@ export default function BreakfastDetail() {
                                 {count}
                             </button>
                             <button
+                                type="button"
                                 className="btn btn-main-color border-0 fs-2 text-dark"
                                 style={{ width: "100px" }}
                                 onClick={addCount}
@@ -102,11 +119,10 @@ export default function BreakfastDetail() {
                     </div>
                     <div className="text-end mt-4 pt-3">
                         <button
+                            type="button"
                             className="btn btn-main-color border-0 fw-bold text-dark"
                             style={{ width: "150px" }}
-                            onClick={() => {
-                                navigate("/cart");
-                            }}
+                            onClick={() => addToCart(menuItem.name)}
                         >
                             加入購物車
                         </button>
