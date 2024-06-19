@@ -18,7 +18,7 @@ export default function User() {
     const [isModifyData, setIsModifyData] = useState(false);
     const navigate = useNavigate();
 
-    // 在组件加载时从 API 获取用户数据
+    // 在组件加載時從 API 獲取用户數據
     useEffect(() => {
         const fetchUserData = async () => {
             const token = localStorage.getItem("jwtToken");
