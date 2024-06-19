@@ -7,9 +7,9 @@ const myFetch = utility.myFetch;
 // 5 APIs
 const menuAPI = {
     // 取得所有菜單: done
-    getAllMenu: async () => {
+    getAllMenu: async (jwtToken) => {
         const url = `${BASE_URL}/menu`;
-        const result = await myFetch("GET", url, {});
+        const result = await myFetch("GET", url, {}, jwtToken);
         return result;
     },
     // 透過 ID 取得菜單: done
