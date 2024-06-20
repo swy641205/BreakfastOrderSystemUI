@@ -7,8 +7,8 @@ const myFetch = utility.myFetch;
 // 5 APIs
 const ordersAPI = {
     // 取得所有訂單: done
-    getAllOrders: async (jwtToken) => {
-        const url = `${BASE_URL}/orders`;
+    getAllOrders: async (jwtToken, self) => {
+        const url = `${BASE_URL}/orders?self=${self}`;
         const result = await myFetch("GET", url, {}, jwtToken);
         return result;
     },
