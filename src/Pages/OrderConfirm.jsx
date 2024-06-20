@@ -71,7 +71,7 @@ export default function OrderConfirm() {
     };
 
     const formatDateTimeForDB = (dateTime) => {
-        return new Date(dateTime).toISOString().slice(0, 19).replace('T', ' ');
+        return new Date(dateTime).toLocaleString("sv");
     };
     
     const acceptOrder = async (order) => {
