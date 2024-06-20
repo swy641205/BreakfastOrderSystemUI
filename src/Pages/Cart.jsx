@@ -118,7 +118,7 @@ export default function Cart() {
 		};
 
 		const response = await ordersAPI.addOrder(token, order);
-		console.log(response);
+		// console.log(response);
 		if (response.code === 201) {
 			alert("感謝您的訂購，請至店家櫃檯結帳。\n您可以在歷史訂單查看訂單狀態。");
 			localStorage.removeItem("cart");

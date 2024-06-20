@@ -24,11 +24,12 @@ export default function OrderHistory() {
     const fetchOrdersByDateRange = async () => {
         const token = localStorage.getItem("jwtToken");
         if (!token) {
-            navigate("/login");
-            return;
+            return navigate("/login");
         }
         try {
             const startDate = new Date(startTime).toISOString().split('T')[0];
+            console.log("startDate", new Date(startTime).toISOString());
+            console.log("startDate", startDate);
             const endDate = new Date(endTime).toISOString().split('T')[0];
             
             const orderRes = await ordersAPI.getAllOrders(token, startDate, endDate);
