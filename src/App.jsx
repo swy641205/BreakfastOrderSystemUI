@@ -7,7 +7,6 @@ import Cart from "./Pages/Cart";
 import OrderHistory from "./Pages/OrderHistory";
 import User from "./Pages/User";
 import BreakfastDetail from "./Pages/BreakfastDetail";
-import Checkout from "./Pages/Checkout";
 import AdminLogin from "./Pages/AdminLogin";
 import ShopLogin from "./Pages/ShopLogin";
 import OrderConfirm from "./Pages/OrderConfirm";
@@ -31,7 +30,6 @@ function App() {
                     <Route path="/history" element={<OrderHistory />} />
                     <Route path="/user" element={<ProtectedRoute component={User} />} />
                     <Route path="/order/detail/:id" element={<BreakfastDetail />} />
-                    <Route path="/checkout" element={<Checkout />} />
                     <Route path="/auth/admin" element={<AdminLogin />} />
                     <Route
                         path="/auth/admin/backstage"
