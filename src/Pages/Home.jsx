@@ -24,23 +24,19 @@ export default function Home() {
     useEffect(() => {
         const fetchUserData = async () => {
             const token = localStorage.getItem("jwtToken");
-            if (token) {
-                try {
-                    const response = await menuAPI.getAllMenu(token);
-                    console.log(response);
-                    if (/^2\d{2}$/.test(response.code)) {
-                        const result = response.data;
-                        // console.log("Fetched data:", result);
-                        setMenuData(result);
-                    } else {
-                        alert(response.message);
-                    }
-                } catch (error) {
-                    console.error("Error fetching menu data:", error);
-                    alert("Failed to fetch menu data.");
+            try {
+                const response = await menuAPI.getAllMenu(token);
+                console.log(response);
+                if (/^2\d{2}$/.test(response.code)) {
+                    const result = response.data;
+                    // console.log("Fetched data:", result);
+                    setMenuData(result);
+                } else {
+                    alert(response.message);
                 }
-            } else {
-                navigate("/login");
+            } catch (error) {
+                console.error("Error fetching menu data:", error);
+                alert("Failed to fetch menu data.");
             }
         };
         fetchUserData();

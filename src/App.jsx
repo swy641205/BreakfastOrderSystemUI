@@ -24,19 +24,18 @@ function App() {
                     <Route index path="/" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/home" element={<ProtectedRoute component={Home} />} />
-                    {/* TODO add protectedroute to all page */}
-                    <Route path="/menu" element={<Menu />} />
-                    <Route path="/cart" element={<Cart />} />
-                    <Route path="/history" element={<OrderHistory />} />
+                    <Route path="/menu" element={<ProtectedRoute component={Menu} />} />
+                    <Route path="/cart" element={<ProtectedRoute component={Cart} />} />
+                    <Route path="/history" element={<ProtectedRoute component={OrderHistory} />} />
                     <Route path="/user" element={<ProtectedRoute component={User} />} />
-                    <Route path="/order/detail/:id" element={<BreakfastDetail />} />
+                    <Route path="/order/detail/:id" element={<ProtectedRoute component={BreakfastDetail} />} />
                     <Route path="/auth/admin" element={<AdminLogin />} />
                     <Route
                         path="/auth/admin/backstage"
-                        element={<AdminBackstage />}
+                        element={<ProtectedRoute component={AdminBackstage} />}
                     />
                     <Route path="/auth/shop" element={<ShopLogin />} />
-                    <Route path="/auth/shop/order" element={<OrderConfirm />} />
+                    <Route path="/auth/shop/order" element={<ProtectedRoute component={OrderConfirm} />} />
                     <Route path="/shop/register" element={<ShopRegister />} />
                     <Route path="*" element={<Login />} />
                 </Routes>

@@ -18,18 +18,18 @@ export default function Login() {
         if (!email || !password) {
             return;
         }
-        const response = await usersAPI.login(email, password);
+        const res = await usersAPI.login(email, password);
 
     
-        if (response.code === 200) {
-            console.log(response);
-            const token = response.token;
-            localStorage.setItem('jwtToken', token);
-
+        if (res.code === 200) {
+            console.log(res);
+            localStorage.setItem('jwtToken', res.data.token);
+            localStorage.setItem('email', res.data.email);
+            localStorage.setItem('username', res.data.username);
             setUserEmail(email);
             navigate("/home");
         } else {
-            alert(response.message || "發生錯誤");
+            alert(res.message || "發生錯誤");
         }
     };
 

@@ -24,17 +24,18 @@ export default function ShopLogin() {
 		if (!email || !password) {
 			return;
 		}
-		const r = await usersAPI.login(email, password);
+		const res = await usersAPI.login(email, password);
 
-		if (r.code === 200) {
-			console.log(r);
-			const token = r.token;
-			localStorage.setItem("jwtToken", token);
+		if (res.code === 200) {
+			console.log(res);
+			localStorage.setItem("jwtToken", res.data.token);
+			localStorage.setItem('email', res.data.email);
+            localStorage.setItem('username', res.data.username);
 		} else {
-			alert(r.message || "發生錯誤");
+			alert(res.message || "發生錯誤");
 		}
-        console.log(r.roles);
-        if (r.roles?.includes('owner')) {
+        console.log(res.data.roles);
+        if (res.data.roles?.includes('owner')) {
             setUserEmail(email);
             navigate("/auth/shop/order");
         } else {

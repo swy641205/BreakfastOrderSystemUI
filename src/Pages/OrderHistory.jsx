@@ -23,9 +23,6 @@ export default function OrderHistory() {
 
     const fetchOrdersByDateRange = async () => {
         const token = localStorage.getItem("jwtToken");
-        if (!token) {
-            return navigate("/login");
-        }
         try {
             const startDate = new Date(startTime).toISOString().split('T')[0];
             console.log("startDate", new Date(startTime).toISOString());

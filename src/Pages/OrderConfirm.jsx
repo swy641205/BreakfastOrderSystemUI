@@ -23,6 +23,8 @@ export default function OrderConfirm() {
 
     const fetchOrdersByStatus = async () => {
         const token = localStorage.getItem("jwtToken");
+        const userName = localStorage.getItem("username");
+        setUserName(userName);
         try {
             const orderRes = await adminAPI.getAllOrder(token);
             const menuRes = await menuAPI.getAllMenu(token);
@@ -93,7 +95,7 @@ export default function OrderConfirm() {
                     <h1 className="text-center pt-5">店家確認訂單</h1>
                     <div className="row">
                         <div className="col-9 pt-3">
-                            <h5 className="text-end pt-3">某某店家 您好</h5>
+                            <h5 className="text-end pt-3">{userName} 您好</h5>
                         </div>
                         <div className="col-3 pt-0">
                             <CustomButton
