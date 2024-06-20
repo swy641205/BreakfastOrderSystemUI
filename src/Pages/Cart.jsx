@@ -32,10 +32,10 @@ export default function Cart() {
 				return;
 			}
 
-			let cart = JSON.parse(localStorage.getItem("cart")) || [];
-			let updatedCart = [];
+			const cart = JSON.parse(localStorage.getItem("cart")) || [];
+			const updatedCart = [];
 
-			for (let item of cart) {
+			for (const item of cart) {
 				try {
 					const response = await menuAPI.getMenuById(token, item.id);
 					if (/^2\d{2}$/.test(response.code)) {
@@ -80,13 +80,13 @@ export default function Cart() {
 	}, [token, navigate]);
 
 	const removeItem = (id) => {
-		let updatedCart = cartItems.filter((item) => item.id !== id);
+		const updatedCart = cartItems.filter((item) => item.id !== id);
 		setCartItems(updatedCart);
 		localStorage.setItem("cart", JSON.stringify(updatedCart));
 	};
 
 	const updateItemCount = (id, count) => {
-		let updatedCart = cartItems.map((item) => {
+		const updatedCart = cartItems.map((item) => {
 			if (item.id === id) {
 				return { ...item, count: Math.max(item.count + count, 1) };
 			}
