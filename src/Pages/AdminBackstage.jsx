@@ -1,24 +1,75 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PositionBar from "../Components/PositionBar";
-import { useRecoilState } from "recoil";
-import userEmailRecoilAtom from "../Data/Recoil/userEmailRecoilAtom";
 import { useNavigate } from "react-router-dom";
 import { Tab, TabContainer, Tabs } from "react-bootstrap";
 import CustomButton from "../Components/CustomButton";
+import adminAPI from "../Data/Restful/adminAPI";
 
 // 管理者後台
 export default function AdminBackstage() {
     const now = new Date().toLocaleString("sv");
-    const [userEmail, setUserEmail] = useRecoilState(userEmailRecoilAtom);
+    const [username] = useState(localStorage.getItem("username"));
+    const [token] = useState(localStorage.getItem("jwtToken"));
+    const [users, setUsers] = useState([]);
+    const [menus, setMenus] = useState([]);
     const navigate = useNavigate();
 
     const logout = async () => {
-        if (userEmail) {
-            setUserEmail("");
-            localStorage.removeItem("userEmail");
-            navigate("/");
+        localStorage.removeItem("jwtToken");
+        navigate("/");
+    };
+
+    useEffect(() => {
+        fetchUsers();
+        fetchMenus();
+    }, []);
+
+    const fetchUsers = async () => {
+        try {
+            const response = await adminAPI.getAllUsers(token);
+            if (/^2\d{2}$/.test(response.code)) {
+                setUsers(response.data);
+            } else {
+                alert(response.message || "Error fetching users");
+            }
+        } catch (error) {
+            console.error("Error fetching users:", error);
+            alert("Failed to fetch users.");
         }
+    };
+
+    const fetchMenus = async () => {
+        try {
+            const response = await adminAPI.getAllMenu(token);
+            if (/^2\d{2}$/.test(response.code)) {
+                setMenus(response.data);
+            } else {
+                alert(response.message || "Error fetching menus");
+            }
+        } catch (error) {
+            console.error("Error fetching menus:", error);
+            alert("Failed to fetch menus.");
+        }
+    };
+
+    const updateMenuItem = async (id, name, description, price) => {
+        try {
+            const response = await adminAPI.updateMenuItem(token, id, name, description, price);
+            if (/^2\d{2}$/.test(response.code)) {
+                alert("Menu item updated successfully");
+                fetchMenus();
+            } else {
+                alert(response.message || "Error updating menu item");
+            }
+        } catch (error) {
+            console.error("Error updating menu item:", error);
+            alert("Failed to update menu item.");
+        }
+    };
+
+    const handleMenuChange = (id, field, value) => {
+        setMenus(menus.map(menu => menu.id === id ? { ...menu, [field]: value } : menu));
     };
 
     return (
@@ -32,7 +83,7 @@ export default function AdminBackstage() {
                             <div className="row">
                                 <div className="col-9 pt-3">
                                     <h5 className="text-end pt-3">
-                                        Admin 您好
+                                        {username} 您好
                                     </h5>
                                 </div>
                                 <div className="col-3 pt-0">
@@ -61,12 +112,14 @@ export default function AdminBackstage() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>John</td>
-                                                    <td>john@gmail.com</td>
-                                                    <td>{now}</td>
-                                                </tr>
+                                                {users.map((user, index) => (
+                                                    <tr key={user.id}>
+                                                        <td>{index + 1}</td>
+                                                        <td>{user.username}</td>
+                                                        <td>{user.email}</td>
+                                                        <td>{new Date(user.register_time).toLocaleString()}</td>
+                                                    </tr>
+                                                ))}
                                             </tbody>
                                         </table>
                                     </Tab>
@@ -76,31 +129,44 @@ export default function AdminBackstage() {
                                                 <tr>
                                                     <td>#</td>
                                                     <td>餐點名稱</td>
+                                                    <td>說明</td>
                                                     <td>價格</td>
                                                     <td>操作</td>
                                                 </tr>
                                             </thead>
                                             <tbody className="align-middle">
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>鮪魚蛋餅</td>
-                                                    <td>NT$ 30</td>
-                                                    <td>
-                                                        <CustomButton
-                                                            label={"修改"}
-                                                        />
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>香雞漢堡</td>
-                                                    <td>NT$ 40</td>
-                                                    <td>
-                                                        <CustomButton
-                                                            label={"修改"}
-                                                        />
-                                                    </td>
-                                                </tr>
+                                                {menus.map((menu, index) => (
+                                                    <tr key={menu.id}>
+                                                        <td>{index + 1}</td>
+                                                        <td>
+                                                            <input
+                                                                type="text"
+                                                                value={menu.name}
+                                                                onChange={(e) => handleMenuChange(menu.id, 'name', e.target.value)}
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <textarea
+                                                                value={menu.description}
+                                                                onChange={(e) => handleMenuChange(menu.id, 'description', e.target.value)}
+                                                                style={{ width: "200px", height: "150px" }}
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                type="text"
+                                                                value={menu.price}
+                                                                onChange={(e) => handleMenuChange(menu.id, 'price', e.target.value)}
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <CustomButton
+                                                                label={"修改"}
+                                                                onClick={() => updateMenuItem(menu.id, menu.name, menu.description, menu.price)}
+                                                            />
+                                                        </td>
+                                                    </tr>
+                                                ))}
                                             </tbody>
                                         </table>
                                     </Tab>
@@ -149,7 +215,7 @@ export default function AdminBackstage() {
                         </div>
                     </div>
                 </div>
-                <div className="container pt-5 pb-5"></div>
+                <div className="container pt-5 pb-5" />
             </div>
             <PositionBar position={"bottom"} />
         </div>
