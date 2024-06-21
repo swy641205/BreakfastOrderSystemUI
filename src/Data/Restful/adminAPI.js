@@ -43,16 +43,16 @@ const adminAPI = {
         return result;
     },
     // 新增菜單項目: done
-    addMenuItem: async (jwtToken, name, description, price) => {
+    addMenuItem: async (jwtToken, name, description, price, tag) => {
         const url = `${BASE_URL}/admin/menu`;
-        const body = { name, description, price };
+        const body = { name, description, price, tag};
         const result = await myFetch("POST", url, body, jwtToken);
         return result;
     },
     // 更新菜單項目: done
-    updateMenuItem: async (jwtToken, id, name, description, price) => {
+    updateMenuItem: async (jwtToken, id, name, description, price, tag) => {
         const url = `${BASE_URL}/admin/menu/${id}`;
-        const body = { name, description, price};
+        const body = { name, description, price, tag};
         const result = await myFetch("PUT", url, body, jwtToken);
         return result;
     },
